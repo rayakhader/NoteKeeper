@@ -1,9 +1,13 @@
 const Note = require('../models/Note');
 
 exports.getAllNotes = async (req,res) =>{
+    const {page =1 , limit = 5} = req.query;
 
     try{
-       const notes =  await Note.find();
+       const notes =  await Note.find()
+       .skip((page-1) * limit)
+       .limit(limit)
+
        res.json(notes)
     }catch(error){
         res.status(500).json({message: error.message})
@@ -36,7 +40,7 @@ exports.updateNote = async(req, res) =>{
             { title: req.body.title, content: req.body.content },
             { new: true } // return updated doc
           );
-        if(!result) return res.status(404).json({message: 'Note not Found'})
+        if(!updatedNote) return res.status(404).json({message: 'Note not Found'})
         res.json(updatedNote)
     }catch(error){
         res.status(400).json({message : error.message})

@@ -36,7 +36,7 @@ exports.updateNote = async(req, res) =>{
             { title: req.body.title, content: req.body.content },
             { new: true } // return updated doc
           );
-        if(!result) return res.status(404).json({message: 'Note not Found'})
+        if(!updatedNote) return res.status(404).json({message: 'Note not Found'})
         res.json(updatedNote)
     }catch(error){
         res.status(400).json({message : error.message})
